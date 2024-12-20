@@ -1,0 +1,18 @@
+# Ignore bin and obj folders
+bin/
+obj/
+
+# Ignore Visual Studio temporary files
+.vs/
+.vscode/
+
+# Ignore build results
+*.exe
+*.dll
+
+# Ignore user-specific files
+*.user
+*.userosscache
+
+# Make sure .resx files are not ignored
+!*.resx
