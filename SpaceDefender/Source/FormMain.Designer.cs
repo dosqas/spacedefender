@@ -1010,7 +1010,7 @@
             Controls.Add(playTableLayoutPanelMain);
             Font = new Font("Press Start 2P", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Icon = (Icon)resources.GetObject("$this.Icon");
+            Icon = Properties.Resources.icon;
             Margin = new Padding(6, 2, 6, 2);
             MaximizeBox = false;
             MinimizeBox = false;
