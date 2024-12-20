@@ -49,9 +49,9 @@ Windows Forms (for GUI and game rendering)
 Some animations may not play smoothly on low-performance systems.
 
 ## Acknowledgements
-Images: Credits to the original image authors (if applicable).
-Sound Effects: Credit to the sound effect creators (if applicable).
-Game Framework: Based on basic space shooter mechanics and Windows Forms for rendering.
+   - Images: Credits to the original image authors (if applicable).
+   - Sound Effects: Credit to the sound effect creators (if applicable).
+   - Game Framework: Based on basic space shooter mechanics and Windows Forms for rendering.
 
 ## Contact
 For any questions or suggestions, feel free to contact me at [sebastian.soptelea@proton.me].
