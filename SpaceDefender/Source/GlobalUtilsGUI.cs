@@ -1,4 +1,6 @@
 ﻿using System.Drawing.Imaging;
+using System.Drawing.Text;
+using System.Runtime.InteropServices;
 
 namespace SpaceDefender
 {

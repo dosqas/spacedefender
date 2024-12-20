@@ -1,7 +1,89 @@
-﻿namespace SpaceDefender
+﻿using System.Drawing.Text;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+namespace SpaceDefender
 {
     partial class FormMain
     {
+        /// <summary>
+        /// A workaround to be able to use custom fonts.
+        /// </summary>
+        private void ApplyCustomFont()
+        {
+            // Load the custom font from resources
+            var fontStream = new MemoryStream(Properties.Resources.PressStart2P_vaV7);
+            if (fontStream != null)
+            {
+                byte[] fontData = new byte[fontStream.Length];
+                fontStream.Read(fontData, 0, (int)fontStream.Length);
+
+                IntPtr fontPtr = Marshal.AllocCoTaskMem(fontData.Length);
+                Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+
+                privateFonts.AddMemoryFont(fontPtr, fontData.Length);
+                Marshal.FreeCoTaskMem(fontPtr);
+
+                // Apply the custom font to various controls with different sizes
+                Font customFont46 = new Font(privateFonts.Families[0], 46F, FontStyle.Bold);
+                Font customFont24 = new Font(privateFonts.Families[0], 24F, FontStyle.Bold);
+                Font customFont18 = new Font(privateFonts.Families[0], 18F, FontStyle.Bold);
+                Font customFont16 = new Font(privateFonts.Families[0], 16F, FontStyle.Bold);
+                Font customFont12 = new Font(privateFonts.Families[0], 12F, FontStyle.Bold);
+
+                mainLabelTitle.Font = customFont46;
+                mainButtonPlay.Font = customFont24;
+                mainButtonTutorial.Font = customFont24;
+                mainButtonAudio.Font = customFont24;
+                mainButtonExit.Font = customFont24;
+
+                exitLabelExiting.Font = customFont24;
+                exitLabelConfirm.Font = customFont24;
+                exitButtonYes.Font = customFont18;
+                exitButtonNo.Font = customFont18;
+
+                tutorialLabelHeader.Font = customFont24;
+                tutorialButtonBack.Font = customFont16;
+                tutorialRichTextBoxTutorial.Font = customFont16;
+
+                audioLabelHeader.Font = customFont24;
+                audioButtonBack.Font = customFont16;
+                audioLabelVolume.Font = customFont18;
+                audioButtonMuteSfx.Font = customFont12;
+                audioLabelSfxVolume.Font = customFont18;
+
+                playLabelHeader.Font = customFont24;
+                playButtonBack.Font = customFont16;
+                playLabelChoose.Font = customFont18;
+                playButtonEasy.Font = customFont12;
+                playButtonMedium.Font = customFont12;
+                playButtonHard.Font = customFont12;
+                playLabelCustom.Font = customFont12;
+                playLabelWaves.Font = customFont12;
+                playTextBoxWaveInput.Font = customFont18;
+                playButtonStart.Font = customFont12;
+                playLabelWaveError.Font = customFont12;
+
+                startingLabelStarting.Font = customFont24;
+
+                gameLabelWave.Font = customFont18;
+                gameLabelStart.Font = customFont18;
+                gameButtonMenu.Font = customFont16;
+
+                pausedLabelPaused.Font = customFont24;
+                pausedButtonReturn.Font = customFont24;
+                pausedButtonExit.Font = customFont24;
+
+                lostLabelLost.Font = customFont18;
+                lostButtonRestart.Font = customFont16;
+                lostButtonMainMenu.Font = customFont16;
+
+                wonLabelWon.Font = customFont18;
+                wonButtonMainMenu.Font = customFont16;
+            }
+        }
+
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -1047,6 +1129,7 @@
             lostTableLayoutPanelMain.PerformLayout();
             wonTableLayoutPanelMain.ResumeLayout(false);
             wonTableLayoutPanelMain.PerformLayout();
+            ApplyCustomFont();
             ResumeLayout(false);
         }
 

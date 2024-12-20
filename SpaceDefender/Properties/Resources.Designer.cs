@@ -581,6 +581,16 @@ namespace SpaceDefender.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] PressStart2P_vaV7 {
+            get {
+                object obj = ResourceManager.GetObject("PressStart2P-vaV7", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap projectile {
