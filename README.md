@@ -30,7 +30,7 @@ SpaceDefender is an exciting 2D space shooter game developed in C#. Players must
    Clone the repository to your local machine using Git:
 
    ```bash
-   git clone https://github.com/your-username/SpaceDefender.git
+   git clone https://github.com/dosqas/SpaceDefender.git
 
 2. **Open the Project:**
 Open the SpaceDefender.sln file in Visual Studio.
