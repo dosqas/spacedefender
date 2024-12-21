@@ -7,80 +7,47 @@ namespace SpaceDefender
 {
     partial class FormMain
     {
+        PrivateFontCollection privateFonts = new PrivateFontCollection();
+
         /// <summary>
-        /// A workaround to be able to use custom fonts.
+        /// A very non-elegant workaround to get the path to the .ttf file for the font.
         /// </summary>
-        private void ApplyCustomFont()
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        private string GetFontFilePath()
         {
-            // Load the custom font from resources
-            var fontStream = new MemoryStream(Properties.Resources.PressStart2P_vaV7);
-            if (fontStream != null)
+            // Get the current directory
+            string currentDirectory = Environment.CurrentDirectory;
+
+            // Navigate to the Resources folder relative to the current directory
+            string relativePath = Path.Combine("..", "..", "..", "Resources", "PressStart2P-vaV7.ttf");
+
+            // Combine the current directory with the relative path
+            string fontFilePath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
+
+            // Check if the file exists
+            if (!File.Exists(fontFilePath))
             {
-                byte[] fontData = new byte[fontStream.Length];
-                fontStream.Read(fontData, 0, (int)fontStream.Length);
+                throw new FileNotFoundException($"Font file not found at {fontFilePath}");
+            }
 
-                IntPtr fontPtr = Marshal.AllocCoTaskMem(fontData.Length);
-                Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+            return fontFilePath;
+        }
 
-                privateFonts.AddMemoryFont(fontPtr, fontData.Length);
-                Marshal.FreeCoTaskMem(fontPtr);
+        /// <summary>
+        /// Loads the custom font.
+        /// </summary>
+        private void LoadFontFromFile()
+        {
+            string fontFilePath = GetFontFilePath();
 
-                // Apply the custom font to various controls with different sizes
-                Font customFont46 = new Font(privateFonts.Families[0], 46F, FontStyle.Bold);
-                Font customFont24 = new Font(privateFonts.Families[0], 24F, FontStyle.Bold);
-                Font customFont18 = new Font(privateFonts.Families[0], 18F, FontStyle.Bold);
-                Font customFont16 = new Font(privateFonts.Families[0], 16F, FontStyle.Bold);
-                Font customFont12 = new Font(privateFonts.Families[0], 12F, FontStyle.Bold);
-
-                mainLabelTitle.Font = customFont46;
-                mainButtonPlay.Font = customFont24;
-                mainButtonTutorial.Font = customFont24;
-                mainButtonAudio.Font = customFont24;
-                mainButtonExit.Font = customFont24;
-
-                exitLabelExiting.Font = customFont24;
-                exitLabelConfirm.Font = customFont24;
-                exitButtonYes.Font = customFont18;
-                exitButtonNo.Font = customFont18;
-
-                tutorialLabelHeader.Font = customFont24;
-                tutorialButtonBack.Font = customFont16;
-                tutorialRichTextBoxTutorial.Font = customFont16;
-
-                audioLabelHeader.Font = customFont24;
-                audioButtonBack.Font = customFont16;
-                audioLabelVolume.Font = customFont18;
-                audioButtonMuteSfx.Font = customFont12;
-                audioLabelSfxVolume.Font = customFont18;
-
-                playLabelHeader.Font = customFont24;
-                playButtonBack.Font = customFont16;
-                playLabelChoose.Font = customFont18;
-                playButtonEasy.Font = customFont12;
-                playButtonMedium.Font = customFont12;
-                playButtonHard.Font = customFont12;
-                playLabelCustom.Font = customFont12;
-                playLabelWaves.Font = customFont12;
-                playTextBoxWaveInput.Font = customFont18;
-                playButtonStart.Font = customFont12;
-                playLabelWaveError.Font = customFont12;
-
-                startingLabelStarting.Font = customFont24;
-
-                gameLabelWave.Font = customFont18;
-                gameLabelStart.Font = customFont18;
-                gameButtonMenu.Font = customFont16;
-
-                pausedLabelPaused.Font = customFont24;
-                pausedButtonReturn.Font = customFont24;
-                pausedButtonExit.Font = customFont24;
-
-                lostLabelLost.Font = customFont18;
-                lostButtonRestart.Font = customFont16;
-                lostButtonMainMenu.Font = customFont16;
-
-                wonLabelWon.Font = customFont18;
-                wonButtonMainMenu.Font = customFont16;
+            if (File.Exists(fontFilePath))
+            {
+                privateFonts.AddFontFile(fontFilePath);
+            }
+            else
+            {
+                MessageBox.Show($"Font file not found: {fontFilePath}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -209,7 +176,7 @@ namespace SpaceDefender
             exitLabelExiting.Anchor = AnchorStyles.None;
             exitLabelExiting.AutoSize = true;
             exitLabelExiting.BackColor = Color.Transparent;
-            exitLabelExiting.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            exitLabelExiting.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             exitLabelExiting.ForeColor = Color.RoyalBlue;
             exitLabelExiting.Location = new Point(477, 297);
             exitLabelExiting.Name = "exitLabelExiting";
@@ -243,7 +210,7 @@ namespace SpaceDefender
             exitLabelConfirm.Anchor = AnchorStyles.None;
             exitLabelConfirm.AutoSize = true;
             exitLabelConfirm.BackColor = Color.Transparent;
-            exitLabelConfirm.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            exitLabelConfirm.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             exitLabelConfirm.ForeColor = Color.RoyalBlue;
             exitLabelConfirm.Location = new Point(87, 253);
             exitLabelConfirm.Name = "exitLabelConfirm";
@@ -273,7 +240,7 @@ namespace SpaceDefender
             // 
             exitButtonYes.Anchor = AnchorStyles.None;
             exitButtonYes.BackColor = Color.RoyalBlue;
-            exitButtonYes.Font = new Font("Press Start 2P", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            exitButtonYes.Font = new Font(privateFonts.Families[0], 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             exitButtonYes.Location = new Point(322, 41);
             exitButtonYes.Name = "exitButtonYes";
             exitButtonYes.Size = new Size(275, 95);
@@ -288,7 +255,7 @@ namespace SpaceDefender
             // 
             exitButtonNo.Anchor = AnchorStyles.None;
             exitButtonNo.BackColor = Color.RoyalBlue;
-            exitButtonNo.Font = new Font("Press Start 2P", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            exitButtonNo.Font = new Font(privateFonts.Families[0], 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             exitButtonNo.Location = new Point(817, 41);
             exitButtonNo.Name = "exitButtonNo";
             exitButtonNo.Size = new Size(275, 95);
@@ -330,7 +297,7 @@ namespace SpaceDefender
             // 
             mainButtonAudio.Anchor = AnchorStyles.None;
             mainButtonAudio.BackColor = Color.RoyalBlue;
-            mainButtonAudio.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            mainButtonAudio.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             mainButtonAudio.Location = new Point(411, 519);
             mainButtonAudio.Margin = new Padding(6, 2, 6, 2);
             mainButtonAudio.Name = "mainButtonAudio";
@@ -347,7 +314,7 @@ namespace SpaceDefender
             mainLabelTitle.Anchor = AnchorStyles.None;
             mainLabelTitle.AutoSize = true;
             mainLabelTitle.BackColor = Color.Transparent;
-            mainLabelTitle.Font = new Font("Press Start 2P", 46.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            mainLabelTitle.Font = new Font(privateFonts.Families[0], 46.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             mainLabelTitle.ForeColor = Color.RoyalBlue;
             mainLabelTitle.Location = new Point(148, 102);
             mainLabelTitle.Margin = new Padding(6, 0, 6, 0);
@@ -360,7 +327,7 @@ namespace SpaceDefender
             // 
             mainButtonPlay.Anchor = AnchorStyles.None;
             mainButtonPlay.BackColor = Color.RoyalBlue;
-            mainButtonPlay.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            mainButtonPlay.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             mainButtonPlay.ForeColor = Color.Black;
             mainButtonPlay.Location = new Point(411, 289);
             mainButtonPlay.Margin = new Padding(6, 2, 6, 2);
@@ -377,7 +344,7 @@ namespace SpaceDefender
             // 
             mainButtonTutorial.Anchor = AnchorStyles.None;
             mainButtonTutorial.BackColor = Color.RoyalBlue;
-            mainButtonTutorial.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            mainButtonTutorial.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             mainButtonTutorial.Location = new Point(411, 404);
             mainButtonTutorial.Margin = new Padding(6, 2, 6, 2);
             mainButtonTutorial.Name = "mainButtonTutorial";
@@ -393,7 +360,7 @@ namespace SpaceDefender
             // 
             mainButtonExit.Anchor = AnchorStyles.None;
             mainButtonExit.BackColor = Color.RoyalBlue;
-            mainButtonExit.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            mainButtonExit.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             mainButtonExit.Location = new Point(411, 634);
             mainButtonExit.Margin = new Padding(6, 2, 6, 2);
             mainButtonExit.Name = "mainButtonExit";
@@ -447,7 +414,7 @@ namespace SpaceDefender
             // 
             tutorialRichTextBoxTutorial.BackColor = Color.Black;
             tutorialRichTextBoxTutorial.Dock = DockStyle.Fill;
-            tutorialRichTextBoxTutorial.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tutorialRichTextBoxTutorial.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             tutorialRichTextBoxTutorial.ForeColor = Color.RoyalBlue;
             tutorialRichTextBoxTutorial.Location = new Point(58, 119);
             tutorialRichTextBoxTutorial.Name = "tutorialRichTextBoxTutorial";
@@ -460,7 +427,7 @@ namespace SpaceDefender
             tutorialLabelHeader.Anchor = AnchorStyles.None;
             tutorialLabelHeader.AutoSize = true;
             tutorialLabelHeader.BackColor = Color.Transparent;
-            tutorialLabelHeader.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tutorialLabelHeader.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             tutorialLabelHeader.ForeColor = Color.RoyalBlue;
             tutorialLabelHeader.Location = new Point(538, 41);
             tutorialLabelHeader.Name = "tutorialLabelHeader";
@@ -472,7 +439,7 @@ namespace SpaceDefender
             // 
             tutorialButtonBack.Anchor = AnchorStyles.None;
             tutorialButtonBack.BackColor = Color.RoyalBlue;
-            tutorialButtonBack.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tutorialButtonBack.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             tutorialButtonBack.Location = new Point(598, 632);
             tutorialButtonBack.Name = "tutorialButtonBack";
             tutorialButtonBack.Size = new Size(225, 90);
@@ -509,7 +476,7 @@ namespace SpaceDefender
             audioLabelHeader.Anchor = AnchorStyles.None;
             audioLabelHeader.AutoSize = true;
             audioLabelHeader.BackColor = Color.Transparent;
-            audioLabelHeader.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            audioLabelHeader.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             audioLabelHeader.ForeColor = Color.RoyalBlue;
             audioLabelHeader.Location = new Point(600, 37);
             audioLabelHeader.Name = "audioLabelHeader";
@@ -521,7 +488,7 @@ namespace SpaceDefender
             // 
             audioButtonBack.Anchor = AnchorStyles.None;
             audioButtonBack.BackColor = Color.RoyalBlue;
-            audioButtonBack.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            audioButtonBack.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             audioButtonBack.Location = new Point(598, 638);
             audioButtonBack.Name = "audioButtonBack";
             audioButtonBack.Size = new Size(225, 90);
@@ -560,7 +527,7 @@ namespace SpaceDefender
             audioLabelVolume.Anchor = AnchorStyles.None;
             audioLabelVolume.AutoSize = true;
             audioLabelVolume.BackColor = Color.Transparent;
-            audioLabelVolume.Font = new Font("Press Start 2P", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            audioLabelVolume.Font = new Font(privateFonts.Families[0], 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             audioLabelVolume.ForeColor = Color.RoyalBlue;
             audioLabelVolume.Location = new Point(250, 198);
             audioLabelVolume.Name = "audioLabelVolume";
@@ -572,7 +539,7 @@ namespace SpaceDefender
             // 
             audioButtonMuteSfx.Anchor = AnchorStyles.None;
             audioButtonMuteSfx.BackColor = Color.RoyalBlue;
-            audioButtonMuteSfx.Font = new Font("Press Start 2P", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            audioButtonMuteSfx.Font = new Font(privateFonts.Families[0], 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             audioButtonMuteSfx.Location = new Point(1091, 185);
             audioButtonMuteSfx.Name = "audioButtonMuteSfx";
             audioButtonMuteSfx.Size = new Size(150, 59);
@@ -587,7 +554,7 @@ namespace SpaceDefender
             // 
             audioLabelSfxVolume.Anchor = AnchorStyles.None;
             audioLabelSfxVolume.AutoSize = true;
-            audioLabelSfxVolume.Font = new Font("Press Start 2P", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            audioLabelSfxVolume.Font = new Font(privateFonts.Families[0], 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             audioLabelSfxVolume.ForeColor = Color.RoyalBlue;
             audioLabelSfxVolume.Location = new Point(928, 200);
             audioLabelSfxVolume.Name = "audioLabelSfxVolume";
@@ -619,7 +586,7 @@ namespace SpaceDefender
             // 
             playButtonBack.Anchor = AnchorStyles.None;
             playButtonBack.BackColor = Color.RoyalBlue;
-            playButtonBack.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playButtonBack.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playButtonBack.Location = new Point(598, 639);
             playButtonBack.Name = "playButtonBack";
             playButtonBack.Size = new Size(225, 90);
@@ -635,7 +602,7 @@ namespace SpaceDefender
             playLabelHeader.Anchor = AnchorStyles.None;
             playLabelHeader.AutoSize = true;
             playLabelHeader.BackColor = Color.Transparent;
-            playLabelHeader.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playLabelHeader.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playLabelHeader.ForeColor = Color.RoyalBlue;
             playLabelHeader.Location = new Point(620, 37);
             playLabelHeader.Name = "playLabelHeader";
@@ -671,7 +638,7 @@ namespace SpaceDefender
             // 
             playButtonEasy.Anchor = AnchorStyles.None;
             playButtonEasy.BackColor = Color.RoyalBlue;
-            playButtonEasy.Font = new Font("Press Start 2P", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playButtonEasy.Font = new Font(privateFonts.Families[0], 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playButtonEasy.Location = new Point(520, 110);
             playButtonEasy.Name = "playButtonEasy";
             playButtonEasy.Size = new Size(375, 50);
@@ -687,7 +654,7 @@ namespace SpaceDefender
             playLabelChoose.Anchor = AnchorStyles.None;
             playLabelChoose.AutoSize = true;
             playLabelChoose.BackColor = Color.Transparent;
-            playLabelChoose.Font = new Font("Press Start 2P", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playLabelChoose.Font = new Font(privateFonts.Families[0], 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playLabelChoose.ForeColor = Color.RoyalBlue;
             playLabelChoose.Location = new Point(422, 45);
             playLabelChoose.Name = "playLabelChoose";
@@ -699,7 +666,7 @@ namespace SpaceDefender
             // 
             playButtonMedium.Anchor = AnchorStyles.None;
             playButtonMedium.BackColor = Color.RoyalBlue;
-            playButtonMedium.Font = new Font("Press Start 2P", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playButtonMedium.Font = new Font(privateFonts.Families[0], 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playButtonMedium.Location = new Point(520, 185);
             playButtonMedium.Name = "playButtonMedium";
             playButtonMedium.Size = new Size(375, 50);
@@ -737,7 +704,7 @@ namespace SpaceDefender
             playLabelCustom.Anchor = AnchorStyles.None;
             playLabelCustom.AutoSize = true;
             playLabelCustom.BackColor = Color.Transparent;
-            playLabelCustom.Font = new Font("Press Start 2P", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playLabelCustom.Font = new Font(privateFonts.Families[0], 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playLabelCustom.ForeColor = Color.RoyalBlue;
             playLabelCustom.Location = new Point(365, 52);
             playLabelCustom.Name = "playLabelCustom";
@@ -750,7 +717,7 @@ namespace SpaceDefender
             playLabelWaves.Anchor = AnchorStyles.None;
             playLabelWaves.AutoSize = true;
             playLabelWaves.BackColor = Color.Transparent;
-            playLabelWaves.Font = new Font("Press Start 2P", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playLabelWaves.Font = new Font(privateFonts.Families[0], 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playLabelWaves.ForeColor = Color.RoyalBlue;
             playLabelWaves.Location = new Point(703, 52);
             playLabelWaves.Name = "playLabelWaves";
@@ -762,7 +729,7 @@ namespace SpaceDefender
             // 
             playTextBoxWaveInput.Anchor = AnchorStyles.None;
             playTextBoxWaveInput.BackColor = Color.LightSteelBlue;
-            playTextBoxWaveInput.Font = new Font("Press Start 2P", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playTextBoxWaveInput.Font = new Font(privateFonts.Families[0], 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playTextBoxWaveInput.Location = new Point(589, 44);
             playTextBoxWaveInput.MaxLength = 2;
             playTextBoxWaveInput.Name = "playTextBoxWaveInput";
@@ -773,7 +740,7 @@ namespace SpaceDefender
             // 
             playButtonStart.Anchor = AnchorStyles.None;
             playButtonStart.BackColor = Color.RoyalBlue;
-            playButtonStart.Font = new Font("Press Start 2P", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playButtonStart.Font = new Font(privateFonts.Families[0], 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playButtonStart.Location = new Point(862, 38);
             playButtonStart.Name = "playButtonStart";
             playButtonStart.Size = new Size(166, 51);
@@ -788,7 +755,7 @@ namespace SpaceDefender
             // 
             playLabelWaveError.Anchor = AnchorStyles.None;
             playLabelWaveError.AutoSize = true;
-            playLabelWaveError.Font = new Font("Press Start 2P", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playLabelWaveError.Font = new Font(privateFonts.Families[0], 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playLabelWaveError.ForeColor = Color.Red;
             playLabelWaveError.Location = new Point(1230, 52);
             playLabelWaveError.Name = "playLabelWaveError";
@@ -799,7 +766,7 @@ namespace SpaceDefender
             // 
             playButtonHard.Anchor = AnchorStyles.None;
             playButtonHard.BackColor = Color.RoyalBlue;
-            playButtonHard.Font = new Font("Press Start 2P", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playButtonHard.Font = new Font(privateFonts.Families[0], 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             playButtonHard.Location = new Point(520, 260);
             playButtonHard.Name = "playButtonHard";
             playButtonHard.Size = new Size(375, 50);
@@ -832,7 +799,7 @@ namespace SpaceDefender
             startingLabelStarting.Anchor = AnchorStyles.None;
             startingLabelStarting.AutoSize = true;
             startingLabelStarting.BackColor = Color.Transparent;
-            startingLabelStarting.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            startingLabelStarting.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             startingLabelStarting.ForeColor = Color.RoyalBlue;
             startingLabelStarting.Location = new Point(711, 237);
             startingLabelStarting.Name = "startingLabelStarting";
@@ -843,7 +810,7 @@ namespace SpaceDefender
             // 
             gameButtonMenu.Anchor = AnchorStyles.None;
             gameButtonMenu.BackColor = Color.RoyalBlue;
-            gameButtonMenu.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            gameButtonMenu.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gameButtonMenu.Location = new Point(1185, 12);
             gameButtonMenu.Name = "gameButtonMenu";
             gameButtonMenu.Size = new Size(225, 75);
@@ -859,7 +826,7 @@ namespace SpaceDefender
             gameLabelWave.Anchor = AnchorStyles.Left;
             gameLabelWave.AutoSize = true;
             gameLabelWave.BackColor = Color.DimGray;
-            gameLabelWave.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            gameLabelWave.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gameLabelWave.ForeColor = Color.White;
             gameLabelWave.Location = new Point(856, 36);
             gameLabelWave.Name = "gameLabelWave";
@@ -892,7 +859,7 @@ namespace SpaceDefender
             // 
             pausedLabelPaused.Anchor = AnchorStyles.None;
             pausedLabelPaused.AutoSize = true;
-            pausedLabelPaused.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            pausedLabelPaused.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             pausedLabelPaused.ForeColor = Color.RoyalBlue;
             pausedLabelPaused.Location = new Point(538, 205);
             pausedLabelPaused.Name = "pausedLabelPaused";
@@ -904,7 +871,7 @@ namespace SpaceDefender
             // 
             pausedButtonReturn.Anchor = AnchorStyles.None;
             pausedButtonReturn.BackColor = Color.RoyalBlue;
-            pausedButtonReturn.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            pausedButtonReturn.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             pausedButtonReturn.Location = new Point(523, 292);
             pausedButtonReturn.Name = "pausedButtonReturn";
             pausedButtonReturn.Size = new Size(375, 90);
@@ -919,7 +886,7 @@ namespace SpaceDefender
             // 
             pausedButtonExit.Anchor = AnchorStyles.None;
             pausedButtonExit.BackColor = Color.RoyalBlue;
-            pausedButtonExit.Font = new Font("Press Start 2P", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            pausedButtonExit.Font = new Font(privateFonts.Families[0], 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
             pausedButtonExit.Location = new Point(523, 416);
             pausedButtonExit.Name = "pausedButtonExit";
             pausedButtonExit.Size = new Size(375, 90);
@@ -950,7 +917,7 @@ namespace SpaceDefender
             // 
             gameLabelStart.Anchor = AnchorStyles.None;
             gameLabelStart.AutoSize = true;
-            gameLabelStart.Font = new Font("Press Start 2P", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            gameLabelStart.Font = new Font(privateFonts.Families[0], 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gameLabelStart.ForeColor = Color.RoyalBlue;
             gameLabelStart.Location = new Point(256, 394);
             gameLabelStart.Name = "gameLabelStart";
@@ -985,7 +952,7 @@ namespace SpaceDefender
             lostLabelLost.Anchor = AnchorStyles.None;
             lostLabelLost.AutoSize = true;
             lostLabelLost.BackColor = Color.White;
-            lostLabelLost.Font = new Font("Press Start 2P", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lostLabelLost.Font = new Font(privateFonts.Families[0], 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lostLabelLost.ForeColor = Color.Red;
             lostLabelLost.Location = new Point(58, 315);
             lostLabelLost.Name = "lostLabelLost";
@@ -997,7 +964,7 @@ namespace SpaceDefender
             // 
             lostButtonRestart.Anchor = AnchorStyles.None;
             lostButtonRestart.BackColor = Color.Firebrick;
-            lostButtonRestart.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lostButtonRestart.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lostButtonRestart.ForeColor = SystemColors.ControlText;
             lostButtonRestart.Location = new Point(523, 443);
             lostButtonRestart.Name = "lostButtonRestart";
@@ -1013,7 +980,7 @@ namespace SpaceDefender
             // 
             lostButtonMainMenu.Anchor = AnchorStyles.None;
             lostButtonMainMenu.BackColor = Color.Firebrick;
-            lostButtonMainMenu.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lostButtonMainMenu.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lostButtonMainMenu.Location = new Point(523, 567);
             lostButtonMainMenu.Name = "lostButtonMainMenu";
             lostButtonMainMenu.Size = new Size(375, 90);
@@ -1050,7 +1017,7 @@ namespace SpaceDefender
             wonLabelWon.Anchor = AnchorStyles.None;
             wonLabelWon.AutoSize = true;
             wonLabelWon.BackColor = Color.Transparent;
-            wonLabelWon.Font = new Font("Press Start 2P", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            wonLabelWon.Font = new Font(privateFonts.Families[0], 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             wonLabelWon.ForeColor = Color.Green;
             wonLabelWon.Location = new Point(66, 319);
             wonLabelWon.Name = "wonLabelWon";
@@ -1062,7 +1029,7 @@ namespace SpaceDefender
             // 
             wonButtonMainMenu.Anchor = AnchorStyles.None;
             wonButtonMainMenu.BackColor = Color.DarkGreen;
-            wonButtonMainMenu.Font = new Font("Press Start 2P", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            wonButtonMainMenu.Font = new Font(privateFonts.Families[0], 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             wonButtonMainMenu.Location = new Point(523, 444);
             wonButtonMainMenu.Name = "wonButtonMainMenu";
             wonButtonMainMenu.Size = new Size(375, 90);
@@ -1090,7 +1057,7 @@ namespace SpaceDefender
             Controls.Add(gamePanelMain);
             Controls.Add(startingTableLayoutPanelMain);
             Controls.Add(playTableLayoutPanelMain);
-            Font = new Font("Press Start 2P", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Font = new Font(privateFonts.Families[0], 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = Properties.Resources.icon;
             Margin = new Padding(6, 2, 6, 2);
@@ -1129,7 +1096,6 @@ namespace SpaceDefender
             lostTableLayoutPanelMain.PerformLayout();
             wonTableLayoutPanelMain.ResumeLayout(false);
             wonTableLayoutPanelMain.PerformLayout();
-            ApplyCustomFont();
             ResumeLayout(false);
         }
 

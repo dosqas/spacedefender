@@ -10,11 +10,6 @@ namespace SpaceDefender
     /// </summary>
     public partial class FormMain : Form
     {
-        /// <summary>
-        /// A collection of added fonts. Contains just the Press Start 2P Font.
-        /// </summary>
-        private PrivateFontCollection privateFonts = new PrivateFontCollection();
-
         private readonly GameController _gameController = new();
 
         /// <summary>
@@ -22,6 +17,7 @@ namespace SpaceDefender
         /// </summary>
         public FormMain()
         {
+            LoadFontFromFile();
             this.DoubleBuffered = true;
             this.KeyPreview = true;
             InitializeComponent();
