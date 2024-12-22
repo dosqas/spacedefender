@@ -42,13 +42,13 @@ Open the SpaceDefender.sln file in Visual Studio.
 
 
 ## Technologies Used
-C#
-Windows Forms (for GUI and game rendering)
-.NET Framework
+   - C#
+   - Windows Forms (for GUI and game rendering)
+   - .NET Framework
 
 ## Known Issues
-Some animations may not play smoothly on low-performance systems.
-The game as a whole looks very weird and stuff will not render when the scaling is not set at 125%
+   - Some animations may not play smoothly on low-performance systems.
+   - The game as a whole looks very weird and stuff will not render when the scaling is not set at 125%
 
 ## Acknowledgements
    - Images: Credits to the original image authors (if applicable).
