@@ -1,7 +1,7 @@
 ﻿namespace SpaceDefender
 {
     /// <summary>
-    /// Represents a projectile in the game that can move and interact with other objects.
+    /// Represents a projectile in the game that can move and interact with other objects such as aliens.
     /// </summary>
     public class Projectile
     {
