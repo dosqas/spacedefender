@@ -51,8 +51,8 @@ Open the SpaceDefender.sln file in Visual Studio.
    - The game as a whole looks very weird and stuff will not render when the scaling is not set at 125%
 
 ## Acknowledgements
-   - Images: Credits to the original image authors (if applicable).
-   - Sound Effects: Credit to the sound effect creators (if applicable).
+   - Images: Credits to the original image authors.
+   - Sound Effects: Credit to the sound effect creators.
    - Game Framework: Based on basic space shooter mechanics and Windows Forms for rendering.
 
 ## Contact
